@@ -104,13 +104,16 @@ func (f *GrpcFormatter) MarshalWrapper(respes ...interface{}) ([]byte, error) {
 	return respCacheByte, nil
 }
 
-func (f *GrpcFormatter) UnMarshalWrapper(respStr []byte, resp interface{}) ([]interface{}, error) {
+func (f *GrpcFormatter) UnMarshalWrapper(respStr []byte, respes ...interface{}) ([]interface{}, error) {
 	var respCache RespCache
 	err := json.Unmarshal(respStr, &respCache)
 	if err != nil {
 		return nil, fmt.Errorf("cache, json Unmarshal  err:%v", err)
 	}
-	var resps []interface{}
+
+	resp := respes[0]
+
+	var ret []interface{}
 	var newResp interface{}
 	if respCache.Message != nil {
 		// 转换成proto信息
@@ -129,6 +132,6 @@ func (f *GrpcFormatter) UnMarshalWrapper(respStr []byte, resp interface{}) ([]in
 		}
 	}
 
-	resps = append(resps, newResp, respErr)
-	return resps, nil
+	ret = append(ret, newResp, respErr)
+	return ret, nil
 }
