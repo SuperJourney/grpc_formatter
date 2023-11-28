@@ -62,10 +62,12 @@ func TestGrpcFormatter_MarshalWrapper(t *testing.T) {
 			name: "test-1",
 			args: args{
 				respes: []interface{}{&demo.DemoResponse{
-					Id: 1,
+					Id:   1,
+					Age:  "18 years old",
+					Name: "hong",
 				}, nil},
 			},
-			want:      `{"message":"CAE="}`,
+			want:      `{"message":"CAESBGhvbmcaDDE4IHllYXJzIG9sZA=="}`,
 			assertion: assert.NoError,
 		},
 		{
@@ -100,11 +102,13 @@ func TestGrpcFormatter_UnMarshalWrapper(t *testing.T) {
 		{
 			name: "test-1",
 			args: args{
-				respStr: []byte(`{"message":"CAE="}`),
+				respStr: []byte(`{"message":"CAESBGhvbmcaDDE4IHllYXJzIG9sZA=="}`),
 				resp:    &demo.DemoResponse{},
 			},
 			want: []interface{}{&demo.DemoResponse{
-				Id: 1,
+				Id:   1,
+				Age:  "18 years old",
+				Name: "hong",
 			}, nil},
 			assertion: assert.NoError,
 		},
